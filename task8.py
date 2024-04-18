@@ -1,11 +1,10 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, sessionmaker
+from datetime import datetime
+from task1 import Jobs
 
-
-engine = create_engine('sqlite:///mars_explorer.db')
 Base = declarative_base()
-
 
 class User(Base):
     __tablename__ = 'users'
@@ -21,7 +20,6 @@ class User(Base):
     hashed_password = Column(String)
     modified_date = Column(DateTime)
 
-
 class Jobs(Base):
     __tablename__ = 'jobs'
 
@@ -30,10 +28,26 @@ class Jobs(Base):
     job = Column(String)
     work_size = Column(Integer)
     collaborators = Column(String)
-    start_date = Column(DateTime)
+    start_date = Column(DateTime, default=datetime.now)
     end_date = Column(DateTime)
     is_finished = Column(Boolean)
 
     user = relationship("User", foreign_keys=[team_leader])
 
-Base.metadata.create_all(engine)
+    def __repr__(self):
+        return f"<Job> {self.job}"
+
+
+db_name = input("Enter the name of your database: ")
+
+engine = create_engine(f'sqlite:///{db_name}.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+
+jobs = session.query(Jobs).filter(
+    Jobs.work_size < 20,
+    Jobs.is_finished == False
+).all()
+
+for job in jobs:
+    print(job)

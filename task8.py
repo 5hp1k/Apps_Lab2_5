@@ -38,9 +38,7 @@ class Jobs(Base):
         return f"<Job> {self.job}"
 
 
-db_name = input("Enter the name of your database: ")
-
-engine = create_engine(f'sqlite:///{db_name}.db')
+engine = create_engine(f'sqlite:///mars_explorer.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 

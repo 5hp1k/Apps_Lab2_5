@@ -1,28 +1,29 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, DateTime
-from sqlalchemy.orm import relationship
-from task1 import Base
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Table, DateTime
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 
-department_members_association = Table('department_members', Base.metadata,
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('department_id', Integer, ForeignKey('departments.id'))
-)
+engine = create_engine('sqlite:///mars_explorer.db')
+
+SessionLocal = sessionmaker(bind=engine)
+session = SessionLocal()
+
+Base = declarative_base()
+
 
 class Department(Base):
     __tablename__ = 'departments'
-
+    
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
     chief = Column(Integer, ForeignKey('users.id'))
+
     email = Column(String)
-    
-    chief_user = relationship("User", foreign_keys=[chief])
-    members = relationship("User", secondary=department_members_association, back_populates="departments")
+
 
 class User(Base):
     __tablename__ = 'users'
-    __table_args__ = {'extend_existing': True}
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     surname = Column(String)
     name = Column(String)
@@ -33,6 +34,10 @@ class User(Base):
     email = Column(String, unique=True)
     hashed_password = Column(String)
     modified_date = Column(DateTime)
-    
-    departments = relationship("Department", secondary=department_members_association, back_populates="members")
- 
+    # departments = 
+
+
+if __name__ == "__main__":
+    Base.metadata.create_all(engine)
+    session.commit()
+    session.close()

@@ -1,5 +1,5 @@
-from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+from sqlalchemy.orm import sessionmaker
 from task1 import Jobs, engine
 
 
@@ -68,6 +68,14 @@ jobs_data = [
         'job': 'construction of new modules',
         'work_size': 25,
         'collaborators': '3, 5',
+        'start_date': datetime.now(),
+        'is_finished': False
+    },
+    {
+        'team_leader': 12,
+        'job': 'digging a quarry',
+        'work_size': 30,
+        'collaborators': '13, 14',
         'start_date': datetime.now(),
         'is_finished': False
     }

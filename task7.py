@@ -3,9 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from task1 import User
 
 
-db_name = input("Enter the name of your database: ")
-
-engine = create_engine(f'sqlite:///{db_name}.db')
+engine = create_engine('sqlite:///mars_explorer.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 

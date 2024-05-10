@@ -36,4 +36,5 @@ class Jobs(Base):
 
     user = relationship("User", foreign_keys=[team_leader])
 
+
 Base.metadata.create_all(engine)

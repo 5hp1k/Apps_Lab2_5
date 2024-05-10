@@ -7,11 +7,9 @@ def user_repr(self):
     return f"<Colonist> {self.id} {self.surname} {self.name}"
 
 
-db_name = input("Enter the name of your database: ")
-
 User.__repr__ = user_repr
 
-engine = create_engine(f'sqlite:///{db_name}')
+engine = create_engine('sqlite:///mars_explorer.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 

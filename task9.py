@@ -16,7 +16,7 @@ team_leaders = session.query(User).join(Jobs, User.id == Jobs.team_leader).filte
 
 if len(team_leaders) == 1:
     print(
-        f"Team lead with the largest team {team_leaders[0].surname} {team_leaders[0].name}")
+        f"Team lead with the largest team: {team_leaders[0].surname} {team_leaders[0].name}")
 else:
     print("Teamleads with the largest teams:")
     for leader in team_leaders:

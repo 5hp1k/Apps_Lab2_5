@@ -3,7 +3,6 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignK
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-
 app = Flask(__name__)
 Base = declarative_base()
 

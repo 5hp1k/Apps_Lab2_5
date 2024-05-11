@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -33,7 +34,7 @@ def register():
             return "Passwords do not match"
 
         new_user = User(surname=surname, name=name, age=age, position=position, speciality=speciality,
-                        address=address, email=email, hashed_password=password)
+                        address=address, email=email, hashed_password=password, modified_date=datetime.now())
 
         session.add(new_user)
         session.commit()

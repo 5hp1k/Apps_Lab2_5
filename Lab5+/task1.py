@@ -1,5 +1,6 @@
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -14,6 +15,8 @@ class Job(Base):
     team_leader = Column(String)
     work_size = Column(Integer)
     collaborators = Column(String)
+    start_date = Column(DateTime)
+    end_date = Column(DateTime)
     is_finished = Column(Boolean)
 
 
@@ -37,8 +40,12 @@ def add_job():
         collaborators = request.form['collaborators']
         is_finished = 'is_finished' in request.form
 
-        new_job = Job(job=job, team_leader=team_leader, work_size=work_size,
-                      collaborators=collaborators, is_finished=is_finished)
+        if is_finished:
+            new_job = Job(job=job, team_leader=team_leader, work_size=work_size,
+                          collaborators=collaborators, start_date=datetime.now(), end_date=datetime.now() + timedelta(hours=int(work_size)), is_finished=is_finished)
+        else:
+            new_job = Job(job=job, team_leader=team_leader, work_size=work_size,
+                          collaborators=collaborators, start_date=datetime.now(), is_finished=is_finished)
 
         session.add(new_job)
         session.commit()
